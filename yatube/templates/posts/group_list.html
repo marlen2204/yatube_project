@@ -4,16 +4,29 @@
     {% extends 'base.html' %}
   </head>
   <body>
-    <header>
-      {% include 'includes/header.html' %}
-    </header>
     <main>
       {% block content %}
-      {{ text }}
+      <div class="container">
+    <title> Записи сообщества {{ group.title  }}</title>
+    <h1>Группа: {{ group.title }} </h1>
+    <p>Описание: {{ group.description }}</p>
+
+  {% for post in posts %}
+   <article>
+      <ul>
+        <li>
+          Автор: {{ post.author.get_full_name }}
+        </li>
+        <li>
+           Дата публикации: {{ post.pub_date|date:"d E Y" }}
+        </li>
+      </ul>
+      <p>{{ post.text }}</p>
+      {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+   </article>
+  </div>
       {% endblock %}
     </main>
-    <footer>
-      {% include 'includes/footer.html' %}
-    </footer>
   </body>
 </html>

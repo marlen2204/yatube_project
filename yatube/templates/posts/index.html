@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
+<head>
     {% extends 'base.html' %}
-    {% load static %}
+    <meta charset="UTF-8">
+</head>
+<body>
+{% block content %}
+<div class="container">
     <title>Последние обновления на сайте</title>
-  </head>
-  {% block content %}
-  <body>
-    <main>
-      {{ text }}
-    </main>
-  </body>
-  {% endblock %}
+    <br>
+    <h1>Последние обновления на сайте</h1>
+    {% for post in posts %}
+
+    {% if not forloop.last %}<hr>{% endif %}
+    {% include 'includes/post.html' %}
+{% if post.group %}
+  <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a>
+{% endif %}
+{% endfor %}
+    {% endblock %}
+   </div>
+</body>
 </html>
