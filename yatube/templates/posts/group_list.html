@@ -8,7 +8,9 @@
       {% include 'includes/header.html' %}
     </header>
     <main>
-      Информация о группах
+      {% block content %}
+      {{ text }}
+      {% endblock %}
     </main>
     <footer>
       {% include 'includes/footer.html' %}

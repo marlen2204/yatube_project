@@ -2,16 +2,14 @@
 <html lang="ru">
   <head>
     {% extends 'base.html' %}
+    {% load static %}
+    <title>Последние обновления на сайте</title>
   </head>
+  {% block content %}
   <body>
-    <header>
-      {% include 'includes/header.html' %}
-    </header>
     <main>
-      Информация на главной странице
+      {{ text }}
     </main>
-    <footer>
-      {% include 'includes/footer.html' %}
-    </footer>
   </body>
+  {% endblock %}
 </html>
