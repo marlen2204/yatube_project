@@ -21,7 +21,7 @@
            Дата публикации: {{ post.pub_date|date:"d E Y" }}
         </li>
       </ul>
-      <p>{{ post.text }}</p>
+      {% include 'includes/post.html' %}
       {% if not forloop.last %}<hr>{% endif %}
     {% endfor %}
    </article>

@@ -11,7 +11,6 @@
     <br>
     <h1>Последние обновления на сайте</h1>
     {% for post in posts %}
-
     {% if not forloop.last %}<hr>{% endif %}
     {% include 'includes/post.html' %}
 {% if post.group %}
