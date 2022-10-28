@@ -1,6 +1,5 @@
 import os
-from pathlib import Path
-
+# from dotenv import load_dotenv
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -8,29 +7,38 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-'''load_dotenv()
+"""load_dotenv()
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
+на сервере нет модуля dotenv но я пытался)
+"""
 
-SECRET_KEY = os.getenv("SECRET_KEY")'''
+# SECRET_KEY = os.getenv("SECRET_KEY")
 SECRET_KEY = 'bh2oku4je2-a*p=$beyv(!*03x+ioyd2(7k(m)sr&^gyac+qjh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'posts:index'
+# LOGOUT_REDIRECT_URL = 'posts:index'
 ALLOWED_HOSTS = []
 
 # Application definition
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
+
 
 INSTALLED_APPS = [
+    'about.apps.AboutConfig',
+    'core.apps.CoreConfig',
+    'users.apps.UsersConfig',
+    'posts.apps.PostsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'posts.apps.PostsConfig',
-    'users.apps.UsersConfig',
-    'core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
@@ -54,10 +62,12 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                 'core.context_processors.year.year',
             ],
         },
     },
@@ -92,19 +102,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+NUMBER_POSTS = 10
+EMPTY_VALUE_DISPLAY = '-пусто-'
 
-GLOBAL_SETTINGS = {
-    'EMPTY_VALUE_DISPLAY': '-пусто-',
-    'NUMBER_POSTS': 10,
-}
 
-LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'posts:index'
-LOGOUT_REDIRECT_URL = 'posts:index'
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -118,8 +123,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_URL = '/static/'
-
-# email
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')

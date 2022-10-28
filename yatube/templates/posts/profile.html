@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <!-- Подключены иконки, стили и заполенены мета теги -->
+    {% extends 'base.html' %}
+
+    <title>Профайл пользователя <!--Лев Толстой--></title>
+</head>
+<body>
+  {% block content %}
+<main>
+    <div class="container py-5">
+        <h1>Все посты пользователя: {{ author }} </h1>
+        <h3>Всего постов: {{ quantity }} </h3>
+        {% for post in page_obj %}
+            {% include 'includes/post.html' %}
+
+
+        <br>
+        {% if post.group %}
+            <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a>
+           {% endif %}
+            {% if not forloop.last %}
+                <hr>
+            {% endif %}
+        {% endfor %}
+        {% include 'includes/paginator.html' %}
+
+    </div>
+</main>
+{% endblock %}
+</body>
+</html>
+

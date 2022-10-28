@@ -1,4 +1,17 @@
-<div class="container">
-    <br>
-    <p>{{ post.text }}</p>
-</div>
+<article>
+    <ul>
+        <li>
+            Автор: {{ post.author.get_full_name }}
+        </li>
+        <li>
+            Дата публикации: {{ post.pub_date|date:"d E Y" }}
+        </li>
+    </ul>
+    <div class="container">
+        <br>
+        <p>{{ post.text }}</p>
+        <a href="{% url 'posts:post_detail' post.id %}">подробная информация </a>
+    </div>
+
+</article>
+
