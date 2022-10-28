@@ -15,9 +15,7 @@ class PostAdmin(admin.ModelAdmin):
     list_editable = ('group',)
     search_fields = ('text',)
     list_filter = ('pub_date',)
-    empty_value_display = settings.GLOBAL_SETTINGS[
-        'EMPTY_VALUE_DISPLAY']
+    empty_value_display = settings.EMPTY_VALUE_DISPLAY
 
 
-# admin.site.register(Post, PostAdmin)
 admin.site.register(Group)
