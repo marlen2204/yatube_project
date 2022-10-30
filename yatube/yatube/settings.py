@@ -20,7 +20,12 @@ DEBUG = True
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'posts:index'
 # LOGOUT_REDIRECT_URL = 'posts:index'
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'testserver',
+]
 
 # Application definition
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
@@ -102,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-NUMBER_POSTS = 10
+NUMBER_POSTS_ON_ONE_PAGE = 10
 EMPTY_VALUE_DISPLAY = '-пусто-'
 
 
