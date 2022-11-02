@@ -27,24 +27,25 @@ def group_posts(request, slug):
 
 
 def profile(request, username):
+    template = 'posts/profile.html'
     author = User.objects.get(username=username)
     posts = author.posts.all()
     context = {
         'page_obj': make_paginator(request, posts),
         'author': author,
     }
-    return render(request, 'posts/profile.html', context)
+    return render(request, template, context)
 
 
 def post_detail(request, post_id):
+    template = 'posts/post_detail.html'
     author = User.objects.get(posts=post_id)
     post = get_object_or_404(Post, pk=post_id)
-    quantity = Post.objects.filter(author=author).count()
     context = {
         'post': post,
         'author': author,
     }
-    return render(request, 'posts/post_detail.html', context)
+    return render(request, template, context)
 
 
 @login_required
