@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     {% extends 'base.html' %}
-    <!-- Подключены иконки, стили и заполенены мета теги -->
+    {% load thumbnail %}
     <title>Пост {{ post.text | truncatewords:30 }}</title>
 </head>
 <body>
@@ -17,7 +17,9 @@
                 {% if post.group %}
                 <li class="list-group-item">
                     Группа: {{ post.group }}
-
+                    <br>
+                    <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы
+                    </a>
                 </li>
                 {% endif %}
                 <li class="list-group-item">
@@ -30,12 +32,19 @@
                     <a href="{% url 'posts:profile' post.author %}">все посты пользователя
                     </a>
                 </li>
-
             </ul>
         </aside>
         <article class="col-12 col-md-9">
+            <br>
+            {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+            <img src="{{ im.url }}">
+            {% endthumbnail %}
             <p>{{ post.text }}</p>
-
+            {% if request.user == author %}
+            <a class="btn btn-primary" href="{% url 'posts:post_edit' post.id  %}">
+                редактировать запись
+            </a>
+            {% endif %}
         </article>
     </div>
 </main>

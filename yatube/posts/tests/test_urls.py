@@ -4,21 +4,30 @@ from ..models import Post, Group
 
 User = get_user_model()
 
+USERNAME_AUTHOR = 'NoName'
+USERNAME_NOT_AUTHOR = 'not_auth'
+TEXT_TEST = 'тестовый пост'
+SLUG_TEST = 'test'
+TITLE_TEST = 'Заголовок тестовой группы'
+DESCRIPTION_TEST = 'Тестовое описание'
+UNEXISTING_PAGE = 'posts/unexisting_page/'
+
 
 class PostURLTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.user = User.objects.create_user(username='NoName')
+        cls.user = User.objects.create_user(username=USERNAME_AUTHOR)
         cls.post = Post.objects.create(
             author=cls.user,
-            text='тестовый пост',
+            text=TEXT_TEST,
         )
-        cls.user_not_author = User.objects.create_user(username='not_auth')
+        cls.user_not_author = User.objects.create_user(
+            username=USERNAME_NOT_AUTHOR)
         cls.group = Group.objects.create(
-            title='Заголовок тестовой группы',
-            slug='test',
-            description='Тестовое описание',
+            title=TITLE_TEST,
+            slug=SLUG_TEST,
+            description=DESCRIPTION_TEST,
         )
 
         cls.templates_url_names_common = \
@@ -26,14 +35,20 @@ class PostURLTests(TestCase):
              '/profile/NoName/': 'posts/profile.html',
              f'/posts/{cls.post.id}/': 'posts/post_detail.html',
              '/': 'posts/index.html',
+             '/about/author/': 'about/author.html',
+             '/about/tech/': 'about/tech.html',
              }
         cls.templates_url_redirect_common = {
-            '/create/': '/auth/login/?next=/create/',
-            f'/posts/{cls.post.id}/edit/': '/auth/login/?next=/posts/1/edit/',
+            '/create/':
+                '/auth/login/?next=/create/',
+            f'/posts/{cls.post.id}/edit/':
+                '/auth/login/?next=/posts/1/edit/',
         }
         cls.template_name_authorized_users = {
             '/create/': 'posts/create_post.html',
             f'/posts/{cls.post.id}/edit/': 'posts/create_post.html',
+            '/about/author/': 'about/author.html',
+            '/about/tech/': 'about/tech.html',
         }
         cls.templates_auth_but_not_author = {
             f'/posts/{cls.post.id}/edit/': f'/posts/{cls.post.id}/',

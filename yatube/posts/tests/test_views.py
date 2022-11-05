@@ -6,6 +6,8 @@ from django import forms
 
 User = get_user_model()
 
+TEXT_TEST = 'тестовый пост'
+
 
 class PostPagesTest(TestCase):
     @classmethod
@@ -58,6 +60,10 @@ class PostPagesTest(TestCase):
             reverse('posts:post_edit',
                     kwargs={'post_id': self.post.id}):
                 'posts/create_post.html',
+            reverse('about:author'):
+                'about/author.html',
+            reverse('about:tech'):
+                'about/tech.html',
         }
         for reverse_name, template in templates_pages_names.items():
             with self.subTest(reverse_name=reverse_name):

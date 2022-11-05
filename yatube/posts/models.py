@@ -27,8 +27,13 @@ class Post(models.Model):
         blank=True,
         null=True,
         related_name='posts',
-        help_text='Введите название группы',
+        help_text='Выберите группу',
         verbose_name='Группа',
+    )
+    image = models.ImageField(
+        'Картинка',
+        upload_to='posts/',
+        blank=True,
     )
 
     class Meta:
