@@ -14,7 +14,6 @@ class PostPagesTest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username='NoName')
-
         cls.group = Group.objects.create(
             title='Заголовок тестовой группы',
             slug='test_slug',
@@ -41,6 +40,7 @@ class PostPagesTest(TestCase):
     def setUp(self):
         self.authorised_client = Client()
         self.authorised_client.force_login(self.user)
+        self.guest_client = Client()
 
     def test_view_uses_correct_template(self):
         templates_pages_names = {
@@ -163,3 +163,10 @@ class PostPagesTest(TestCase):
                     kwargs={'slug': 'test_slug2'}))
         group_obj = response.context['page_obj']
         self.assertNotIn(self.post, group_obj)
+
+    def test_add_comment_no_auth(self):
+        response = self.guest_client.get(
+            reverse('posts:add_comment', kwargs={'post_id': self.post.pk})
+        )
+        template = '/auth/login/?next=/posts/1/comment/'
+        self.assertRedirects(response, template)

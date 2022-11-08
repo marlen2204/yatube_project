@@ -1,4 +1,4 @@
-from ..models import Post
+from ..models import Post, Comment
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 from django.contrib.auth import get_user_model
@@ -24,8 +24,10 @@ class PostCreateFormTests(TestCase):
             text='тестовый пост',
             author=cls.user,
         )
+
+        # print(cls.comment.text)
         cls.form = PostForm()
-        print(TEMP_MEDIA_ROOT)
+        # print(TEMP_MEDIA_ROOT)
 
     def setUp(self):
         self.authorised_client = Client()
@@ -38,14 +40,13 @@ class PostCreateFormTests(TestCase):
 
     def test_correct_create_post(self):
         posts_count = Post.objects.count()
-        small_gif = (
-            b'\x47\x49\x46\x38\x39\x61\x02\x00'
-            b'\x01\x00\x80\x00\x00\x00\x00\x00'
-            b'\xFF\xFF\xFF\x21\xF9\x04\x00\x00'
-            b'\x00\x00\x00\x2C\x00\x00\x00\x00'
-            b'\x02\x00\x01\x00\x00\x02\x02\x0C'
-            b'\x0A\x00\x3B'
-        )
+        small_gif = (b'\x47\x49\x46\x38\x39\x61\x02\x00'
+                     b'\x01\x00\x80\x00\x00\x00\x00\x00'
+                     b'\xFF\xFF\xFF\x21\xF9\x04\x00\x00'
+                     b'\x00\x00\x00\x2C\x00\x00\x00\x00'
+                     b'\x02\x00\x01\x00\x00\x02\x02\x0C'
+                     b'\x0A\x00\x3B'
+                     )
         uploaded = SimpleUploadedFile(
             name='small.gif',
             content=small_gif,
@@ -85,3 +86,12 @@ class PostCreateFormTests(TestCase):
         post_new = Post.objects.get(pk=self.post.pk)
         self.assertNotEqual(post_old_text, post_new.text)
         self.assertEqual(post_old_image, post_new.image)
+
+    def test_display_comment_on_the_page(self):
+        response = self.authorised_client.get(
+            reverse('posts:post_detail',
+                    kwargs={'post_id': self.post.id}))
+        comment = response.context['comments'][0].text
+        self.assertEqual(comment, 'test comment')
+
+
