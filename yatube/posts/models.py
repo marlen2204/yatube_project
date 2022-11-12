@@ -1,4 +1,5 @@
 from django.db import models
+
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -54,3 +55,20 @@ class Comment(models.Model):
     text = models.TextField(help_text='Напишите комментарий',
                             verbose_name='Комментарий')
     created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text[:15]
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User,
+        related_name='follower',
+        on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        User,
+        related_name='following',
+        on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'author',)

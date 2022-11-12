@@ -32,7 +32,7 @@ class PostURLTests(TestCase):
 
         cls.templates_url_names_common = \
             {'/group/test/': 'posts/group_list.html',
-             '/profile/NoName/': 'posts/profile.html',
+             f'/profile/{USERNAME_AUTHOR}/': 'posts/profile.html',
              f'/posts/{cls.post.id}/': 'posts/post_detail.html',
              '/': 'posts/index.html',
              '/about/author/': 'about/author.html',
@@ -42,13 +42,15 @@ class PostURLTests(TestCase):
             '/create/':
                 '/auth/login/?next=/create/',
             f'/posts/{cls.post.id}/edit/':
-                '/auth/login/?next=/posts/1/edit/',
+                f'/auth/login/?next=/posts/{cls.post.id}/edit/',
         }
         cls.template_name_authorized_users = {
             '/create/': 'posts/create_post.html',
             f'/posts/{cls.post.id}/edit/': 'posts/create_post.html',
             '/about/author/': 'about/author.html',
             '/about/tech/': 'about/tech.html',
+            '/follow/': 'posts/follow.html',
+
         }
         cls.templates_auth_but_not_author = {
             f'/posts/{cls.post.id}/edit/': f'/posts/{cls.post.id}/',
@@ -92,5 +94,16 @@ class PostURLTests(TestCase):
                 self.assertRedirects(response, template)
 
     def test_unexisting_page(self):
-        response = self.guest_client.get('posts/unexisting_page/')
+        response = self.guest_client.get(UNEXISTING_PAGE)
         self.assertEqual(response.status_code, 404)
+
+    # страница follow тестируется в одном из сабтестов
+    def test_comment_url(self):
+        url = f'/posts/{self.post.id}/comment/'
+        response = self.authorized_client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_follow_btn_urls(self):
+        url_follow = f'/profile/{self.user.username}/follow/'
+        response = self.authorized_client.post(url_follow, follow=True)
+        self.assertEqual(response.status_code, 200)
