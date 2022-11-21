@@ -3,8 +3,10 @@ from django.shortcuts import render, \
 from .models import Post, Group, User, Follow
 from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
-from .utils import make_paginator
+from .utils import make_paginator, read_file
 from django.views.decorators.cache import cache_page
+from django.conf import settings
+import os
 
 
 @cache_page(20)
@@ -36,6 +38,7 @@ def profile(request, username):
                  and author.following.filter(user=request.user)
                  .exists()
                  )
+
     context = {
         'page_obj': make_paginator(request, posts),
         'author': author,
@@ -50,11 +53,14 @@ def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments = post.comments.all()
     form = CommentForm(request.POST or None)
+    file = post.file
+
     context = {
         'post': post,
         'author': author,
         'comments': comments,
         'form': form,
+        'text_file': read_file(file),
     }
     return render(request, template, context)
 
@@ -138,3 +144,13 @@ def profile_unfollow(request, username):
                                  user=request.user)
     follower.delete()
     return redirect('posts:profile', username=username)
+
+
+@login_required
+def authors_follow(request):
+    posts = Post.objects.filter(author__following__user=request.user)
+    context = {
+        'posts': posts,
+    }
+    template = 'posts/authors_follow.html'
+    return render(request, template, context)

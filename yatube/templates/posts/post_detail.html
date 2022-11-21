@@ -41,6 +41,11 @@
             <img src="{{ im.url }}">
             {% endthumbnail %}
             <p>{{ post.text }}</p>
+            {% if post.file %}
+            {% for ln in text_file%}
+            <p> {{ ln }} </p>
+            {% endfor %}
+            {% endif %}
             {% if request.user == author %}
             <a class="btn btn-primary" href="{% url 'posts:post_edit' post.id  %}">
                 редактировать запись

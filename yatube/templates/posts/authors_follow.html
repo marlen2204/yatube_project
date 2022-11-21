@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'base.html' %}
+</head>
+<body>
+{% block content %}
+<div class="container">
+    <h2> Авторы </h2>
+</div>
+{% for post in posts %}
+{{ post.author }}
+{% endfor %}
+{% endblock %}
+</body>
+</html>

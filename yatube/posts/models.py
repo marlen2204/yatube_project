@@ -36,6 +36,12 @@ class Post(models.Model):
         upload_to='posts/',
         blank=True,
     )
+    file = models.FileField(
+        'Текст поста можно загрузить из файла',
+        upload_to='file/',
+        blank=True,
+
+    )
 
     class Meta:
         ordering = ['-pub_date']

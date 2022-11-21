@@ -11,6 +11,7 @@
     <br>
     <h1>Подписки</h1>
     {% include 'includes/switcher.html' %}
+    {% if page_obj %}
     {% for post in page_obj %}
     {% include 'includes/post.html' %}
     {% if post.group %}
@@ -20,6 +21,9 @@
     <hr>
     {% endif %}
     {% endfor %}
+    {% else %}
+    <p class="text-center" style="opacity: .7 "> Нет подписок </p>
+    {% endif %}
     {% include 'includes/paginator.html' %}
     {% endblock %}
 </div>
