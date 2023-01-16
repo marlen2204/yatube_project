@@ -1,22 +1,13 @@
 import os
 
-# from dotenv import load_dotenv
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from dotenv import load_dotenv
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+load_dotenv()
 
-# SECURITY WARNING: keep the secret key used in production secret!
-"""load_dotenv()
-env_path = Path('.') / '.env'
-load_dotenv(dotenv_path=env_path)
-на сервере нет модуля dotenv но я пытался)
-"""
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-# SECRET_KEY = os.getenv("SECRET_KEY")
-SECRET_KEY = 'bh2oku4je2-a*p=$beyv(!*03x+ioyd2(7k(m)sr&^gyac+qjh'
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'posts:index'
@@ -42,9 +33,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'rest_framework',
     'django.contrib.staticfiles',
     'sorl.thumbnail',
     'debug_toolbar',
+    'api.apps.ApiConfig',
+    'djoser',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +143,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
